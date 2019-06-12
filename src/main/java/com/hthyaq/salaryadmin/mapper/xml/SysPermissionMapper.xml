@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hthyaq.salaryadmin.mapper.SysPermissionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hthyaq.salaryadmin.entity.SysPermission">
+        <id column="id" property="id"/>
+        <result column="pid" property="pid"/>
+        <result column="pname" property="pname"/>
+        <result column="name" property="name"/>
+        <result column="url" property="url"/>
+        <result column="type" property="type"/>
+        <result column="level" property="level"/>
+        <result column="sort" property="sort"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, pid, pname, name, url, type, level, sort, create_time
+    </sql>
+
+    <select id="getMenuData" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />
+        from sys_permission where id in
+        (
+            select pid from sys_permission where id in
+            (
+                select permission_id from sys_role_permission where role_id in
+                (
+                    select role_id from sys_role_user where user_id=#{userId}
+                )
+            )
+        ) order by sort
+    </select>
+
+    <select id="getButtonData" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select tmp.id, tmp.pid, tmp.pname, tmp.name, sys_permission.url, tmp.type, tmp.level, tmp.sort, tmp.create_time
+        from
+        (
+            select * from sys_permission where id in
+            (
+                    select permission_id from sys_role_permission where role_id in
+                    (
+                            select role_id from sys_role_user where user_id=#{userId}
+                    )
+            )
+        ) tmp left join sys_permission on tmp.pid=sys_permission.id order by tmp.pname,tmp.sort
+    </select>
+
+</mapper>

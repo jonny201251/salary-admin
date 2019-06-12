@@ -1,0 +1,51 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /salary
+spring:
+  druid:
+    # Druid基本配置
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/salary?useUnicode=true&characterEncoding=utf8&useSSL=true
+    username: root
+    password: root
+    # Druid扩展配置
+    type: com.alibaba.druid.pool.DruidDataSource
+    db-type: mysql
+    initial-size: 5
+    min-idle: 5
+    max-active: 20
+    max-wait: 60000
+    time-between-eviction-runs-millis: 60000
+    min-evictable-idle-time-millis: 300000
+    validation-query: select 'x'
+    pool-prepared-statements: false
+    test-on-return: false
+    test-on-borrow: false
+    test-while-idle: true
+    use-global-data-source-stat: true
+    #stat用于监控统计，wall用于防止sql注入
+    filters: stat,wall
+    #慢SQL
+    connect-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+  #热部署开发，线上环境要关闭
+  devtools:
+    restart:
+      enabled: true
+  activiti:
+    check-process-definitions: false
+#    database-schema-update: drop-create
+    database-schema-update: true
+    async-executor-activate: false
+#mybatis plus配置
+mybatis-plus:
+  mapper-locations: classpath:com/hthyaq/salaryadmin/mapper/xml/*.xml
+  #开发时，打印出所有sql语句
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+
+
+
+

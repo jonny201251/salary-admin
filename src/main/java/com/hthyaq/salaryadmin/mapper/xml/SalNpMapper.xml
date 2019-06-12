@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hthyaq.salaryadmin.mapper.SalNpMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hthyaq.salaryadmin.entity.SalNp">
+        <id column="id" property="id"/>
+        <result column="last_id" property="lastId"/>
+        <result column="gangwei" property="gangwei"/>
+        <result column="xinji" property="xinji"/>
+        <result column="bucha" property="bucha"/>
+        <result column="bunei" property="bunei"/>
+        <result column="fudong" property="fudong"/>
+        <result column="hangling" property="hangling"/>
+        <result column="gongbu" property="gongbu"/>
+        <result column="shuxi" property="shuxi"/>
+        <result column="caimo" property="caimo"/>
+        <result column="zhibu" property="zhibu"/>
+        <result column="baoliu" property="baoliu"/>
+        <result column="jidu" property="jidu"/>
+        <result column="shuidian" property="shuidian"/>
+        <result column="xiaoyi" property="xiaoyi"/>
+        <result column="gangjin" property="gangjin"/>
+        <result column="danshengbu" property="danshengbu"/>
+        <result column="qita" property="qita"/>
+        <result column="fangzu" property="fangzu"/>
+        <result column="yanglao" property="yanglao"/>
+        <result column="zhufang" property="zhufang"/>
+        <result column="shuikuan" property="shuikuan"/>
+        <result column="shiye" property="shiye"/>
+        <result column="koukuan" property="koukuan"/>
+        <result column="yiliao" property="yiliao"/>
+        <result column="yingfa" property="yingfa"/>
+        <result column="yingkou" property="yingkou"/>
+        <result column="jiangjin" property="jiangjin"/>
+        <result column="shifa" property="shifa"/>
+        <result column="user_id" property="userId"/>
+        <result column="user_name" property="userName"/>
+        <result column="user_num" property="userNum"/>
+        <result column="user_category" property="userCategory"/>
+        <result column="user_bank_account" property="userBankAccount"/>
+        <result column="user_status" property="userStatus"/>
+        <result column="user_job" property="userJob"/>
+        <result column="user_sort" property="userSort"/>
+        <result column="user_dept_id" property="userDeptId"/>
+        <result column="user_dept_name" property="userDeptName"/>
+        <result column="user_org" property="userOrg"/>
+        <result column="year" property="year"/>
+        <result column="month" property="month"/>
+        <result column="yearmonth_string" property="yearmonthString"/>
+        <result column="yearmonth_int" property="yearmonthInt"/>
+        <result column="finish" property="finish"/>
+        <result column="create_time" property="createTime"/>
+        <result column="comment" property="comment"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, last_id, gangwei, xinji, bucha, bunei, fudong, hangling, gongbu, shuxi, caimo, zhibu, baoliu, jidu, shuidian, xiaoyi, gangjin, danshengbu, qita, fangzu, yanglao, zhufang, shuikuan, shiye, koukuan, yiliao, yingfa, yingkou, jiangjin, shifa, user_id, user_name, user_num, user_category, user_bank_account, user_status,user_job, user_sort, user_dept_id, user_dept_name, user_org, year, month, yearmonth_string, yearmonth_int, finish, create_time, comment
+    </sql>
+    
+
+
+
+    <update id="updateFinishState">
+        update sal_np set finish='已月结' where year=#{year} and month=#{month} and finish='未月结'
+    </update>
+</mapper>

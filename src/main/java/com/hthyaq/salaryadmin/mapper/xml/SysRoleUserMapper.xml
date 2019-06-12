@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hthyaq.salaryadmin.mapper.SysRoleUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hthyaq.salaryadmin.entity.SysRoleUser">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="role_id" property="roleId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, role_id
+    </sql>
+
+    <select id="getProcessUserNames" resultType="com.hthyaq.salaryadmin.vo.RoleAndUserName">
+        select distinct sys_role.name roleName,sys_user.name userName from sys_role_user
+        inner join
+        (
+        select id,name from sys_role where name in('人事专员','财务专员','人事确认专员','人事领导','财务领导','公司人事主管领导')
+        )as sys_role
+        on sys_role_user.role_id=sys_role.id
+        inner join sys_user
+        on sys_role_user.user_id=sys_user.id
+    </select>
+
+    <select id="getRoleNames" resultType="java.lang.String">
+        select sys_role.name from sys_role_user left join sys_role
+        on sys_role_user.role_id=sys_role.id
+        where sys_role_user.user_id=#{userId}
+    </select>
+</mapper>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hthyaq.salaryadmin.mapper.SysDeptMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hthyaq.salaryadmin.entity.SysDept">
+        <id column="id" property="id" />
+        <result column="pid" property="pid" />
+        <result column="pname" property="pname" />
+        <result column="name" property="name" />
+        <result column="status" property="status" />
+        <result column="sort" property="sort" />
+        <result column="create_time" property="createTime" />
+        <result column="comment" property="comment" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, pid, pname, name, status, sort, create_time, comment
+    </sql>
+
+</mapper>

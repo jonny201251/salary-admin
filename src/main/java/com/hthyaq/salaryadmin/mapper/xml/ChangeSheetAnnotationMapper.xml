@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hthyaq.salaryadmin.mapper.ChangeSheetAnnotationMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hthyaq.salaryadmin.entity.ChangeSheetAnnotation">
+        <id column="id" property="id" />
+        <result column="task_id" property="taskId" />
+        <result column="annotation" property="annotation" />
+        <result column="change_sheet_id" property="changeSheetId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, task_id, annotation, change_sheet_id
+    </sql>
+    
+    <select id="getAnnotationByProcessInstanceId" resultType="com.hthyaq.salaryadmin.vo.ChangeSheeTaskAndtAnnotation">
+        select NAME_ as taskName,ASSIGNEE_ as userName,START_TIME_ as startTime,END_TIME_ as endTime,change_sheet_annotation.annotation,change_sheet_annotation.button_name as buttonName
+        from ACT_HI_TASKINST
+        LEFT JOIN change_sheet_annotation
+        on ACT_HI_TASKINST.ID_=change_sheet_annotation.task_id
+        where ACT_HI_TASKINST.PROC_INST_ID_=#{changeSheetId}
+        order by ACT_HI_TASKINST.ID_
+    </select>
+
+</mapper>

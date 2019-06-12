@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hthyaq.salaryadmin.mapper.ChangeSheetSalMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hthyaq.salaryadmin.entity.ChangeSheetSal">
+        <id column="id" property="id" />
+        <result column="year" property="year" />
+        <result column="month" property="month" />
+        <result column="num" property="num" />
+        <result column="dept_name" property="deptName" />
+        <result column="name" property="name" />
+        <result column="category" property="category" />
+        <result column="job" property="job" />
+        <result column="change_name" property="changeName" />
+        <result column="last_money" property="lastMoney" />
+        <result column="current_money" property="currentMoney" />
+        <result column="reason" property="reason" />
+        <result column="user_sort" property="userSort" />
+        <result column="t_name" property="tName" />
+        <result column="sal_id" property="salId" />
+        <result column="change_sheet_id" property="changeSheetId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, year, month, num, dept_name, name, category,job, change_name, last_money, current_money, reason, sort, t_name, sal_id, change_sheet_id
+    </sql>
+
+</mapper>
