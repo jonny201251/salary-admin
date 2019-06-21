@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -19,7 +18,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
+//@Accessors(chain = true)--这个注释会引起反射时找不到set方法，所以去掉了
 public class SalLx implements Serializable {
 
     private static final long serialVersionUID = 1L;

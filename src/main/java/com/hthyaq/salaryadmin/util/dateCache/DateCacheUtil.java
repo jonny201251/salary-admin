@@ -12,7 +12,9 @@ import com.hthyaq.salaryadmin.service.SalLxService;
 import com.hthyaq.salaryadmin.service.SalNpService;
 import com.hthyaq.salaryadmin.util.Constants;
 import com.hthyaq.salaryadmin.util.SpringUtil;
+import com.hthyaq.salaryadmin.util.YearMonth;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 //将内聘工资、退休工资、离休工资的日期缓存起来
@@ -30,17 +32,29 @@ public class DateCacheUtil {
                 private NoFinishSalaryDate get(String key) {
                     if (Constants.SAL_NP.equals(key)) {
                         SalNpService salNpService = SpringUtil.getBean(SalNpService.class);
-                        SalNp salNp = salNpService.list(new QueryWrapper<SalNp>().eq("finish", Constants.FINISH_STATUS_NO)).get(0);
+                        final List<SalNp> salNpList = salNpService.list(new QueryWrapper<SalNp>().eq("finish", Constants.FINISH_STATUS_NO));
+                        if (salNpList.size() == 0) {
+                            return new NoFinishSalaryDate(YearMonth.getCurrentYear(), YearMonth.getCurrentMonth(), YearMonth.getYearMonthString(), YearMonth.getYearMonthInt());
+                        }
+                        SalNp salNp = salNpList.get(0);
                         return new NoFinishSalaryDate(salNp.getYear(), salNp.getMonth(), salNp.getYearmonthString(), salNp.getYearmonthInt());
                     } else if (Constants.SAL_LTX.equals(key)) {
                         SalLtxService salLtxService = SpringUtil.getBean(SalLtxService.class);
-                        SalLtx salLtx = salLtxService.list(new QueryWrapper<SalLtx>().eq("finish", Constants.FINISH_STATUS_NO)).get(0);
+                        final List<SalLtx> salLtxList = salLtxService.list(new QueryWrapper<SalLtx>().eq("finish", Constants.FINISH_STATUS_NO));
+                        if (salLtxList.size() == 0) {
+                            return new NoFinishSalaryDate(YearMonth.getCurrentYear(), YearMonth.getCurrentMonth(), YearMonth.getYearMonthString(), YearMonth.getYearMonthInt());
+                        }
+                        SalLtx salLtx = salLtxList.get(0);
                         return new NoFinishSalaryDate(salLtx.getYear(), salLtx.getMonth(), salLtx.getYearmonthString(), salLtx.getYearmonthInt());
                     } else if (Constants.SAL_LX.equals(key)) {
                         SalLxService salLxService = SpringUtil.getBean(SalLxService.class);
-                        SalLx salLx = salLxService.list(new QueryWrapper<SalLx>().eq("finish", Constants.FINISH_STATUS_NO)).get(0);
+                        final List<SalLx> salLxList = salLxService.list(new QueryWrapper<SalLx>().eq("finish", Constants.FINISH_STATUS_NO));
+                        if (salLxList.size() == 0) {
+                            return new NoFinishSalaryDate(YearMonth.getCurrentYear(), YearMonth.getCurrentMonth(), YearMonth.getYearMonthString(), YearMonth.getYearMonthInt());
+                        }
+                        SalLx salLx = salLxList.get(0);
                         return new NoFinishSalaryDate(salLx.getYear(), salLx.getMonth(), salLx.getYearmonthString(), salLx.getYearmonthInt());
-                    }else{
+                    } else {
                         throw new RuntimeException("月结时，key找不到了！");
                     }
                 }

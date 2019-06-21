@@ -196,6 +196,7 @@ public class SalLxServiceImpl extends ServiceImpl<SalLxMapper, SalLx> implements
                 ofNullable(d.getButie2()).orElse(0.0) +
                 ofNullable(d.getShubao()).orElse(0.0) +
                 ofNullable(d.getButie3()).orElse(0.0) +
+                ofNullable(d.getTiaozi1()).orElse(0.0) +
                 ofNullable(d.getTiaozi2()).orElse(0.0) +
                 ofNullable(d.getBucha()).orElse(0.0) +
                 ofNullable(d.getZengzi()).orElse(0.0) +

@@ -140,4 +140,9 @@ public class YearMonth {
     public static Integer getYearMonthInt() {
         return getYearMonthInt(getCurrentYear(), getCurrentMonth());
     }
+
+    //获取当前月份的yearMonthString
+    public static String getYearMonthString() {
+        return getCurrentYear()+"年"+getCurrentMonth()+"月";
+    }
 }

@@ -34,14 +34,14 @@ public class CompareObj {
                 Object oldValue = getMethod.invoke(oldObj);
                 Object newValue = getMethod.invoke(newObj);
                 if (oldValue == null || newValue == null) continue;
-                if(oldValue instanceof Double){
+                if (oldValue instanceof Double) {
                     if (!oldValue.toString().equals(newValue.toString())) {
                         list.add(new CompareObjResult(fieldName, oldValue, newValue));
                     }
                 }
             }
         } catch (Exception e) {
-            throw new RuntimeException("两个对象不同的属性值-错误");
+            throw new RuntimeException(e.getMessage());
         }
         return list;
     }

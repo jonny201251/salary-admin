@@ -115,8 +115,8 @@ public class SalNpFileController {
 
     /*
     站发-本期收入=应发合计+其他薪金合计+计税加项
-	院发-本期收入=应发合计
-	院发人员的站发部分-本期收入=其他薪金合计+计税加项
+	院发-本期收入=应发合计+计税加项
+	院发人员的站发部分-本期收入=其他薪金合计
      */
     @ApiOperation("导出报税数据")
     @GetMapping("/writeUpTaxExcel")
@@ -187,8 +187,9 @@ public class SalNpFileController {
                     upTaxBaseRowModel1.setName(salNp.getUserName())
                             .setType("居民身份证")
                             .setIdNum(salNp.getUserIdNum())
-                            .setIncome(salNp.getYingfa())
-                            .setNoTax(ofNullable(salBonusMap.get(salNp.getId())).orElse(0.0))
+                            .setIncome(salNp.getYingfa()+ ofNullable(salNpTaxMap.get(salNp.getId() + Constants.ADD)).orElse(0.0))
+//                            .setNoTax(ofNullable(salBonusMap.get(salNp.getId())).orElse(0.0))
+                            .setNoTax(0.0)
                             .setYanglao(salNp.getYanglao())
                             .setYiliao(salNp.getYiliao())
                             .setShiye(salNp.getShiye())
@@ -205,7 +206,7 @@ public class SalNpFileController {
                     upTaxBaseRowModel2.setName(salNp.getUserName())
                             .setType("居民身份证")
                             .setIdNum(salNp.getUserIdNum())
-                            .setIncome(salNp.getJiangjin() + ofNullable(salNpTaxMap.get(salNp.getId() + Constants.ADD)).orElse(0.0))
+                            .setIncome(salNp.getJiangjin())
                             .setNoTax(ofNullable(salBonusMap.get(salNp.getId())).orElse(0.0));
                     yuan2List.add(upTaxBaseRowModel2);
                 }

@@ -47,7 +47,7 @@ public class UploadFileBatchModifyServiceImpl implements UploadFileBatchModifySe
 
     @Override
     public boolean completeUpload(MultipartFile[] files, String type, String path, String comment) {
-        boolean flag = true;
+        boolean flag = false;
         if (Constants.PATH_SAL_NP.equals(path) && Constants.BATCH_MODIFY_YINGFA.equals(type)) {//内聘的应发应扣
             //遍历出excel的数据
             List<Object> excelDatas = iterateExcel(files, YingfaYingkouSalNp.class);
@@ -283,14 +283,12 @@ public class UploadFileBatchModifyServiceImpl implements UploadFileBatchModifySe
             Set<Long> salBonusIds = (Set<Long>) result.get("salBonusIds");
             List<SalBonus> insertSalBonus = (List<SalBonus>) result.get("insertSalBonus");
             List<SalBonus> noModifySalBonus = (List<SalBonus>) result.get("noModifySalBonus");
-            if (flag && CollectionUtil.isNotNullOrEmpty(salBonusIds)) {
+            if (CollectionUtil.isNotNullOrEmpty(salBonusIds)) {
                 //删除-其他薪金
                 flag = salBonusService.removeByIds(salBonusIds);
             }
-            if (flag) {
-                //插入-其他薪金
-                flag = salBonusService.saveBatch(insertSalBonus);
-            }
+            //插入-其他薪金
+            flag = salBonusService.saveBatch(insertSalBonus);
         } else if (Constants.PATH_SAL_LX.equals(path) && Constants.BATCH_MODIFY_OTHER_BONUS.equals(type)) {//离休的其他薪金
             //遍历出excel
             List<Object> excelDatas = iterateExcelIncludeHeader(files);
@@ -340,14 +338,12 @@ public class UploadFileBatchModifyServiceImpl implements UploadFileBatchModifySe
             Set<Long> salBonusIds = (Set<Long>) result.get("salBonusIds");
             List<SalBonus> insertSalBonus = (List<SalBonus>) result.get("insertSalBonus");
             List<SalBonus> noModifySalBonus = (List<SalBonus>) result.get("noModifySalBonus");
-            if (flag && CollectionUtil.isNotNullOrEmpty(salBonusIds)) {
+            if (CollectionUtil.isNotNullOrEmpty(salBonusIds)) {
                 //删除-其他薪金
                 flag = salBonusService.removeByIds(salBonusIds);
             }
-            if (flag) {
-                //插入-其他薪金
-                flag = salBonusService.saveBatch(insertSalBonus);
-            }
+            //插入-其他薪金
+            flag = salBonusService.saveBatch(insertSalBonus);
         } else if (Constants.PATH_SAL_NP.equals(path)) {   //计税专用项
             String dbType = "";
             if (Constants.BATCH_MODIFY_TAX_ADD.equals(type)) {

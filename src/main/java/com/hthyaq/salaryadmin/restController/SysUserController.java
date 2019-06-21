@@ -70,9 +70,9 @@ public class SysUserController {
         List<SysUser> list = sysUserService.list(qw);
         if (CollectionUtil.isNotNullOrEmpty(list) && list.size() == 1) {
             String key = null;
-            if (type.contains("np")) {
+            if (type.contains("/salNp")) {
                 key = Constants.SAL_NP;
-            } else if (type.contains("ltx")) {
+            } else if (type.contains("/salLtx")) {
                 key = Constants.SAL_LTX;
             } else {
                 key = Constants.SAL_LX;
