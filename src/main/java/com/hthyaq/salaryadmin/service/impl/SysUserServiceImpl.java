@@ -7,6 +7,7 @@ import com.hthyaq.salaryadmin.mapper.SysUserMapper;
 import com.hthyaq.salaryadmin.service.*;
 import com.hthyaq.salaryadmin.util.Constants;
 import com.hthyaq.salaryadmin.util.IDNumUtil;
+import com.hthyaq.salaryadmin.util.Md5Util;
 import com.hthyaq.salaryadmin.util.dateCache.DateCacheUtil;
 import com.hthyaq.salaryadmin.util.dateCache.NoFinishSalaryDate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 //存在，姓名=姓名+身份证号后3位
                 newSysUser.setName(newSysUser.getName() + "" + IDNumUtil.idNum(newSysUser.getIdNum(), 3));
             }
+            //密码=身份证号后6位
+            newSysUser.setPwd(Md5Util.encryPassword(IDNumUtil.idNum(newSysUser.getIdNum(), 6)));
             //先保存用户，是为了获取用户的id
             flag = this.save(newSysUser);
             //变动单
@@ -73,7 +76,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             //更新changeSheetUser中的排序
             if (oldUser.getSort() != newSysUser.getSort()) {
                 ChangeSheetUser changeSheetUser = changeSheetUserService.getOne(new QueryWrapper<ChangeSheetUser>().eq("sys_user_id", newSysUser.getId()));
-                if(changeSheetUser!=null){
+                if (changeSheetUser != null) {
                     changeSheetUser.setUserSort(newSysUser.getSort());
                     flag = changeSheetUserService.updateById(changeSheetUser);
                 }
@@ -89,6 +92,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      * 人员变动-内聘
      *       在职-人员部门调动
      *      不在职之xxx
+     *
+     * 在职->调出+离职+死亡，删除当月的工资信息
+     * 在职->退休，在职里删除当月的工资，退休里添加当月的工资（数据为0）
+     * 在职 不会转 离休
+     *
+     * 退休->死亡，删除当月的工资信息
      */
     public boolean modifyUserGenerateChangeSheet(SysUser oldSysUser, SysUser newSysUser) {
         //获取工资表中的未月结的年份和月份
@@ -140,9 +149,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             ChangeSheetUser changeSheetUser = constructChangeSheetUser(oldSysUser, newSysUser, year, month, Constants.USER_NOT_JOB_RETIRE, oldDeptName, newDeptName);
             flag1 = changeSheetUserService.save(changeSheetUser);
             flag2 = deleteSalNpUserInfo(oldSysUser);
-        } else if (Constants.USER_NOT_JOB_RETIRE.equals(oldJob) && Constants.USER_NOT_JOB_DIE.equals(newJob)) {
+            flag2 = flag2 && insertSalLtx(oldSysUser);
+        } else if (Constants.USER_NOT_JOB_RETIRE.equals(oldJob) && Constants.USER_LTX_DIE.equals(newJob)) {
             //退休人员的死亡时的处理
-            ChangeSheetUser changeSheetUser = constructChangeSheetUser(oldSysUser, newSysUser, year, month, Constants.USER_NOT_JOB_DIE, oldDeptName, newDeptName);
+            ChangeSheetUser changeSheetUser = constructChangeSheetUser(oldSysUser, newSysUser, year, month, Constants.USER_LTX_DIE, oldDeptName, newDeptName);
             flag1 = changeSheetUserService.save(changeSheetUser);
             flag2 = deleteSalLtxUserInfo(oldSysUser);
         } else if (Constants.USER_JOB.equals(oldJob) && Constants.USER_NOT_JOB_LX.equals(newJob)) {
@@ -150,9 +160,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             ChangeSheetUser changeSheetUser = constructChangeSheetUser(oldSysUser, newSysUser, year, month, Constants.USER_NOT_JOB_LX, oldDeptName, newDeptName);
             flag1 = changeSheetUserService.save(changeSheetUser);
             flag2 = deleteSalNpUserInfo(oldSysUser);
-        } else if (Constants.USER_NOT_JOB_LX.equals(oldJob) && Constants.USER_NOT_JOB_DIE.equals(newJob)) {
+        } else if (Constants.USER_NOT_JOB_LX.equals(oldJob) && Constants.USER_LTX_DIE.equals(newJob)) {
             //离休人员的死亡时的处理
-            ChangeSheetUser changeSheetUser = constructChangeSheetUser(oldSysUser, newSysUser, year, month, Constants.USER_NOT_JOB_DIE, oldDeptName, newDeptName);
+            ChangeSheetUser changeSheetUser = constructChangeSheetUser(oldSysUser, newSysUser, year, month, Constants.USER_LTX_DIE, oldDeptName, newDeptName);
             flag1 = changeSheetUserService.save(changeSheetUser);
             flag2 = deleteSalLxUserInfo(oldSysUser);
         } else {
@@ -168,6 +178,29 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         return flag1 && flag2;
     }
 
+    //往sal_ltx(退休表)插入一条数据
+    private boolean insertSalLtx(SysUser oldSysUser) {
+        SalLtx salLtx = new SalLtx();
+        salLtx.setUserId(oldSysUser.getId());
+        salLtx.setUserName(oldSysUser.getName());
+        salLtx.setUserCategory(oldSysUser.getCategory());
+        salLtx.setUserBankAccount(oldSysUser.getBankAccount());
+        salLtx.setUserStatus(oldSysUser.getStatus());
+        salLtx.setUserJob(oldSysUser.getJob());
+        salLtx.setUserGiveMode(oldSysUser.getGiveMode());
+        salLtx.setUserSort(oldSysUser.getSort());
+        salLtx.setUserDeptId(oldSysUser.getDeptId());
+        salLtx.setUserDeptName(oldSysUser.getDeptName());
+        salLtx.setUserOrg(oldSysUser.getOrg());
+        //时间
+        NoFinishSalaryDate noFinishSalaryDate = DateCacheUtil.get(Constants.SAL_LTX);
+        salLtx.setYearmonthString(noFinishSalaryDate.getYearmonthString());
+        salLtx.setYearmonthInt(noFinishSalaryDate.getYearmonthInt());
+        salLtx.setYear(noFinishSalaryDate.getYear());
+        salLtx.setMonth(noFinishSalaryDate.getMonth());
+        return salLtxService.save(salLtx);
+    }
+
     //当在职人员处于[调出、死亡、离职]状态时，删除-工资的人员信息
     private boolean deleteSalNpUserInfo(SysUser oldSysUser) {
         boolean flag = true;
@@ -180,6 +213,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         }
         return flag;
     }
+
     private boolean deleteSalLtxUserInfo(SysUser oldSysUser) {
         boolean flag = true;
         SalLtx salLtx = salLtxService.getOne(new QueryWrapper<SalLtx>().eq("user_name", oldSysUser.getName()).eq("finish", Constants.FINISH_STATUS_NO));
@@ -190,6 +224,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         }
         return flag;
     }
+
     private boolean deleteSalLxUserInfo(SysUser oldSysUser) {
         boolean flag = true;
         SalLx salLx = salLxService.getOne(new QueryWrapper<SalLx>().eq("user_name", oldSysUser.getName()).eq("finish", Constants.FINISH_STATUS_NO));
@@ -206,7 +241,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         ChangeSheetUser changeSheetUser = new ChangeSheetUser();
         changeSheetUser.setYear(year)
                 .setMonth(month)
-                .setType(type.replaceAll("不在职之",""))
+                .setType(type.replaceAll("不在职之|离退休之", ""))
                 .setName(newSysUser.getName())
                 .setUserSort(oldSysUser.getSort())
                 .setOldDept(oldDeptName)

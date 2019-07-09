@@ -6,7 +6,7 @@ spring:
   druid:
     # Druid基本配置
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/salary?useUnicode=true&characterEncoding=utf8&useSSL=true
+    url: jdbc:mysql://127.0.0.1:3306/salary?useUnicode=true&characterEncoding=utf8&useSSL=true&autoReconnect=true&failOverReadOnly=false
     username: root
     password: root
     # Druid扩展配置
@@ -40,6 +40,8 @@ spring:
 #mybatis plus配置
 mybatis-plus:
   mapper-locations: classpath:com/hthyaq/salaryadmin/mapper/xml/*.xml
+  global-config:
+    banner: false
   #开发时，打印出所有sql语句
 #  configuration:
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

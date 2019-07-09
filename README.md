@@ -28,3 +28,4 @@ ureport访问地址：http://localhost/ureport/designer
     修改Constants中的D盘，还是E盘
     修改logback-spring.xml的配置
     修改application.yml
+    修改ureport.properties中ureport.debug=false

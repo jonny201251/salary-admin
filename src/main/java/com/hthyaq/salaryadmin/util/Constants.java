@@ -58,6 +58,7 @@ public class Constants {
     public static final String USER_NOT_JOB_LEAVE = "不在职之离职";
     public static final String USER_NOT_JOB_DIE = "不在职之死亡";
     public static final String USER_NOT_JOB_LX = "不在职之离休";
+    public static final String USER_LTX_DIE = "离退休之死亡";
     //部门变动单-操作类型
     public static final String DEPT_CHANGE = "名称变更";
     public static final String DEPT_RECOMBINE = "部门重组";

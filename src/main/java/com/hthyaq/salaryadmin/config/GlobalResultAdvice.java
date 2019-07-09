@@ -19,7 +19,7 @@ public class GlobalResultAdvice implements ResponseBodyAdvice {
 
     @Override
     public Object beforeBodyWrite(Object obj, MethodParameter methodParameter, MediaType mediaType, Class aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
-        System.out.println(methodParameter.getDeclaringClass().getSimpleName()+"--"+methodParameter.getMethod().getName());
+//        System.out.println(methodParameter.getDeclaringClass().getSimpleName()+"--"+methodParameter.getMethod().getName());
         String packageName = methodParameter.getDeclaringClass().getPackage().getName();
         if (packageName.contains(PACKAGE) && GlobalResult.class != methodParameter.getMethod().getReturnType()) {
             if (obj instanceof Boolean && !((Boolean) obj)) {
