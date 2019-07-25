@@ -26,7 +26,8 @@
         <result column="fangzu" property="fangzu"/>
         <result column="yanglao" property="yanglao"/>
         <result column="zhufang" property="zhufang"/>
-        <result column="shuikuan" property="shuikuan"/>
+        <result column="shuikuan1" property="shuikuan1"/>
+        <result column="shuikuan2" property="shuikuan2"/>
         <result column="shiye" property="shiye"/>
         <result column="koukuan" property="koukuan"/>
         <result column="yiliao" property="yiliao"/>
@@ -56,7 +57,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, last_id, gangwei, xinji, bucha, bunei, fudong, hangling, gongbu, shuxi, caimo, zhibu, baoliu, jidu, shuidian, xiaoyi, gangjin, danshengbu, qita, fangzu, yanglao, zhufang, shuikuan, shiye, koukuan, yiliao, yingfa, yingkou, jiangjin, shifa, user_id, user_name, user_num, user_category, user_bank_account, user_status,user_job, user_sort, user_dept_id, user_dept_name, user_org, year, month, yearmonth_string, yearmonth_int, finish, create_time, comment
+        id, last_id, gangwei, xinji, bucha, bunei, fudong, hangling, gongbu, shuxi, caimo, zhibu, baoliu, jidu, shuidian, xiaoyi, gangjin, danshengbu, qita, fangzu, yanglao, nianjin,zhufang, shuikuan1,shuikuan2, shiye, koukuan, yiliao, yingfa, yingkou, jiangjin, shifa, user_id, user_name, user_num, user_category, user_bank_account, user_status,user_job, user_sort, user_dept_id, user_dept_name, user_org, year, month, yearmonth_string, yearmonth_int, finish, create_time, comment
     </sql>
     
 

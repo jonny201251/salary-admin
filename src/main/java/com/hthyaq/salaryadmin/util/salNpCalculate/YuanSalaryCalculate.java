@@ -94,7 +94,7 @@ public class YuanSalaryCalculate extends SalaryCalculate {
         shouldTaxSum2 = currentYingfaSum + beforeSumMap.get("beforeYingfaSum")
                 + currentJishuiAddSum + beforeSumMap.get("beforeJishuiAddSum")
                 - currentYingkouSum - beforeSumMap.get("beforeYingkouSum")
-                - currentJishuisubtractSum
+                - currentJishuisubtractSum - beforeSumMap.get("beforeJishuiSubtractSumExclude")
                 + threeSum;
         return shouldTaxSum2;
     }

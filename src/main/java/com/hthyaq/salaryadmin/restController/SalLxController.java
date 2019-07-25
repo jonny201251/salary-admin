@@ -64,7 +64,7 @@ public class SalLxController {
         return salLxService.editViewComplexData(salLxId);
     }
 
-    @PostMapping("/finish")
+    @GetMapping("/finish")
     public boolean finish() {
         return salLxService.completeMonthSettlement();
     }

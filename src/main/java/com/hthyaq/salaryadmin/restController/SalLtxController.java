@@ -76,7 +76,7 @@ public class SalLtxController {
     }
 
     @ApiOperation("月结-退休工资")
-    @PostMapping("/finish")
+    @GetMapping("/finish")
     public boolean finish() {
         return salLtxService.completeMonthSettlement();
     }

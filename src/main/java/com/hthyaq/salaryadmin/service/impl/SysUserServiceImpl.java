@@ -150,7 +150,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             flag1 = changeSheetUserService.save(changeSheetUser);
             flag2 = deleteSalNpUserInfo(oldSysUser);
             flag2 = flag2 && insertSalLtx(oldSysUser);
-        } else if (Constants.USER_NOT_JOB_RETIRE.equals(oldJob) && Constants.USER_LTX_DIE.equals(newJob)) {
+        } else if (Constants.USER_NOT_JOB_RETIRE.equals(oldJob) && (Constants.USER_LTX_DIE.equals(newJob) || Constants.USER_NOT_JOB_DIE.equals(newJob))) {
             //退休人员的死亡时的处理
             ChangeSheetUser changeSheetUser = constructChangeSheetUser(oldSysUser, newSysUser, year, month, Constants.USER_LTX_DIE, oldDeptName, newDeptName);
             flag1 = changeSheetUserService.save(changeSheetUser);
@@ -160,7 +160,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             ChangeSheetUser changeSheetUser = constructChangeSheetUser(oldSysUser, newSysUser, year, month, Constants.USER_NOT_JOB_LX, oldDeptName, newDeptName);
             flag1 = changeSheetUserService.save(changeSheetUser);
             flag2 = deleteSalNpUserInfo(oldSysUser);
-        } else if (Constants.USER_NOT_JOB_LX.equals(oldJob) && Constants.USER_LTX_DIE.equals(newJob)) {
+        } else if (Constants.USER_NOT_JOB_LX.equals(oldJob) && (Constants.USER_LTX_DIE.equals(newJob) || Constants.USER_NOT_JOB_DIE.equals(newJob))) {
             //离休人员的死亡时的处理
             ChangeSheetUser changeSheetUser = constructChangeSheetUser(oldSysUser, newSysUser, year, month, Constants.USER_LTX_DIE, oldDeptName, newDeptName);
             flag1 = changeSheetUserService.save(changeSheetUser);
@@ -272,7 +272,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     //联动修改sal_ltx表中的当月的用户的信息
     private boolean updateSalLtxUserInfo(SysUser oldSysUser, SysUser newSysUser) {
-        SalLtx salLtx = salLtxService.getOne(new QueryWrapper<SalLtx>().eq("finish", Constants.FINISH_STATUS_NO));
+        SalLtx salLtx = salLtxService.getOne(new QueryWrapper<SalLtx>().eq("user_name", oldSysUser.getName()).eq("finish", Constants.FINISH_STATUS_NO));
         if (salLtx == null) return true;
         salLtx.setUserId(newSysUser.getId());
         salLtx.setUserName(newSysUser.getName());
@@ -290,7 +290,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     //联动修改sal_tx表中的当月的用户的信息
     private boolean updateSalLxUserInfo(SysUser oldSysUser, SysUser newSysUser) {
-        SalLx salLx = salLxService.getOne(new QueryWrapper<SalLx>().eq("finish", Constants.FINISH_STATUS_NO));
+        SalLx salLx = salLxService.getOne(new QueryWrapper<SalLx>().eq("user_name", oldSysUser.getName()).eq("finish", Constants.FINISH_STATUS_NO));
         if (salLx == null) return true;
         salLx.setUserId(newSysUser.getId());
         salLx.setUserName(newSysUser.getName());

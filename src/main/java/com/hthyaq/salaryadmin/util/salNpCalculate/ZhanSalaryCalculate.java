@@ -35,7 +35,7 @@ public class ZhanSalaryCalculate extends SalaryCalculate {
          */
     public Double shouldTaxSum1(String type, Double currentOtherBonusSum, Double currentJishuiAddSum, Double currentJishuisubtractSum) {
         double shouldTaxSum1 = 0.0, currentYingfaSum = 0.0, currentYingkouSum = 0.0;
-        SalNp ss=salNp;
+        SalNp ss = salNp;
         currentYingfaSum = yingfa();
         currentYingkouSum = yingkou();
         if ("页面".equals(type)) {
@@ -67,7 +67,7 @@ public class ZhanSalaryCalculate extends SalaryCalculate {
                 + currentJishuiAddSum + beforeSumMap.get("beforeJishuiAddSum")
                 + currentOtherBonusSum + beforeSumMap.get("beforeOtherBonusSum")
                 - currentYingkouSum - beforeSumMap.get("beforeYingkouSum")
-                - currentJishuisubtractSum;
+                - currentJishuisubtractSum - beforeSumMap.get("beforeJishuiSubtractSumExclude");
         return shouldTaxSum1;
     }
 

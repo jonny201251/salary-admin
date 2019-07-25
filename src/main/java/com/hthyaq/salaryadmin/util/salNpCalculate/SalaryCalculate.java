@@ -159,6 +159,16 @@ public class SalaryCalculate {
         return beforeJishuiAddSum;
     }
 
+    //之前月份的计税专用-减项（除了Contants.TAX_COLUMNS之外的）
+    protected Double beforeJishuiSubtractSumExclude(List<Long> beforeSalIdList) {
+        Double beforeJishuiSubtractSumExclude = 0.0;
+        List<SalNpTax> salNpTaxList = salNpTaxService.list(new QueryWrapper<SalNpTax>().eq("type", Constants.SUBTRACT).in("sal_np_id", beforeSalIdList).notIn("name", Constants.TAX_COLUMNS));
+        if (CollectionUtil.isNotNullOrEmpty(salNpTaxList)) {
+            beforeJishuiSubtractSumExclude = salNpTaxList.stream().map(SalNpTax::getMoney).reduce(0.0, Double::sum);
+        }
+        return beforeJishuiSubtractSumExclude;
+    }
+
     //根据用户名查询出本年的[起始月份,当月)的工资
     protected List<SalNp> beforeSalNp(String userName, Integer startMonth) {
         return salNpService.list(new QueryWrapper<SalNp>().eq("year", salNp.getYear()).between("month", startMonth, salNp.getMonth() - 1).eq("user_name", userName));
@@ -194,12 +204,13 @@ public class SalaryCalculate {
 
     /*
     工资发放方式=站发工资
-        [开始月份，当月)税款1、应发、应扣、其他薪金(类别=应发计税)、计税专用-加项
+        [开始月份，当月)税款1、应发、应扣、其他薪金(类别=应发计税)、计税专用-加项、计税专用-减项（除了Contants.TAX_COLUMNS之外的）
         map.put("beforeShuikuan1Sum",beforeShuikuan1Sum);
         map.put("beforeYingfaSum", beforeYingfaSum);
         map.put("beforeYingkouSum", beforeYingkouSum);
         map.put("beforeOtherBonusSum", beforeOtherBonusSum);
         map.put("beforeJishuiAddSum", beforeJishuiAddSum);
+        map.put("beforeJishuiSubtractSumExclude", beforeJishuiSubtractSumExclude);
     工资发放方式=院发工资
         税款1（其他薪金(类别=应发计税)、税款1）
         税款2（应发、应扣、计税专用-加项、税款2）
@@ -209,6 +220,7 @@ public class SalaryCalculate {
         map.put("beforeYingkouSum", beforeYingkouSum);
         map.put("beforeOtherBonusSum", beforeOtherBonusSum);
         map.put("beforeJishuiAddSum", beforeJishuiAddSum);
+        map.put("beforeJishuiSubtractSumExclude", beforeJishuiSubtractSumExclude);
     */
     protected Map<String, Double> beforeSum(Integer startMonth) {
         Map<String, Double> beforeSumMap = Maps.newHashMap();
@@ -218,6 +230,7 @@ public class SalaryCalculate {
         Double beforeYingkouSum = 0.0;
         Double beforeOtherBonusSum = 0.0;
         Double beforeJishuiAddSum = 0.0;
+        Double beforeJishuiSubtractSumExclude = 0.0;
         List<SalNp> salNpList = beforeSalNp(salNp.getUserName(), startMonth);
         if (CollectionUtil.isNotNullOrEmpty(salNpList)) {
             //工资的id
@@ -233,6 +246,8 @@ public class SalaryCalculate {
             beforeOtherBonusSum = beforeOtherBonusSum(beforeSalNpIds, Constants.YINGFA_TAX);
             //计税专用-加项
             beforeJishuiAddSum = beforeJishuiAddSum(beforeSalNpIds);
+            //计税专用-减项（除了Contants.TAX_COLUMNS之外的）
+            beforeJishuiSubtractSumExclude=beforeJishuiSubtractSumExclude(beforeSalNpIds);
         }
         beforeSumMap.put("beforeShuikuan1Sum", beforeShuikuan1Sum);
         beforeSumMap.put("beforeShuikuan2Sum", beforeShuikuan2Sum);
@@ -240,6 +255,7 @@ public class SalaryCalculate {
         beforeSumMap.put("beforeYingkouSum", beforeYingkouSum);
         beforeSumMap.put("beforeOtherBonusSum", beforeOtherBonusSum);
         beforeSumMap.put("beforeJishuiAddSum", beforeJishuiAddSum);
+        beforeSumMap.put("beforeJishuiSubtractSumExclude", beforeJishuiSubtractSumExclude);
         return beforeSumMap;
     }
 

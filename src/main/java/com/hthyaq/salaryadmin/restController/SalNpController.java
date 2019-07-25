@@ -89,7 +89,7 @@ public class SalNpController {
 
     //应发、应扣、计税加项（食补=500）、计税减项（基本扣除项=月份*5000、6项扣除-都等于0）
     @ApiOperation("月结-内聘工资")
-    @PostMapping("/finish")
+    @GetMapping("/finish")
     public boolean finish() {
         NoFinishSalaryDate noFinishSalaryDate = DateCacheUtil.get(Constants.SAL_NP);
         //是否可以月结

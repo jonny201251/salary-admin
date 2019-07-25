@@ -4,15 +4,20 @@ package com.hthyaq.salaryadmin.restController;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Lists;
+import com.hthyaq.salaryadmin.entity.SalNp;
+import com.hthyaq.salaryadmin.entity.SalNpTax;
 import com.hthyaq.salaryadmin.entity.SysPermission;
 import com.hthyaq.salaryadmin.entity.SysUser;
+import com.hthyaq.salaryadmin.service.SalNpService;
 import com.hthyaq.salaryadmin.service.SysPermissionService;
 import com.hthyaq.salaryadmin.service.SysUserService;
 import com.hthyaq.salaryadmin.util.CollectionUtil;
 import com.hthyaq.salaryadmin.util.Constants;
 import com.hthyaq.salaryadmin.util.Md5Util;
 import com.hthyaq.salaryadmin.util.dateCache.DateCacheUtil;
+import com.hthyaq.salaryadmin.util.dateCache.NoFinishSalaryDate;
 import com.hthyaq.salaryadmin.vo.LoginPage;
+import com.hthyaq.salaryadmin.vo.Repeater;
 import com.hthyaq.salaryadmin.vo.SalPage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -39,6 +44,8 @@ public class SysUserController {
     private SysUserService sysUserService;
     @Autowired
     private SysPermissionService sysPermissionService;
+    @Autowired
+    private SalNpService salNpService;
 
     @ApiOperation("根据分页查询-用户")
     @GetMapping("/list")
@@ -65,7 +72,6 @@ public class SysUserController {
             qw.in("job", "不在职之离职", "不在职之退休");
         } else {
             qw.eq("job", "不在职之离休");
-
         }
         List<SysUser> list = sysUserService.list(qw);
         if (CollectionUtil.isNotNullOrEmpty(list) && list.size() == 1) {
@@ -77,7 +83,31 @@ public class SysUserController {
             } else {
                 key = Constants.SAL_LX;
             }
-            return SalPage.converter(list.get(0), DateCacheUtil.get(key).getYearmonthString());
+            NoFinishSalaryDate noFinishSalaryDate = DateCacheUtil.get(key);
+            SalPage salPage = SalPage.converter(list.get(0), noFinishSalaryDate.getYearmonthString());
+            if (type.contains("/salNp")) {
+                List<SalNpTax> jishui_add_repeater = Lists.newArrayList();
+                List<SalNpTax> jishui_subtract_repeater = Lists.newArrayList();
+
+                List<String> taxColumns = Constants.TAX_COLUMNS;
+                for (String column : taxColumns) {
+                    if ("食补".equals(column)) {
+                        jishui_add_repeater.add(new SalNpTax().setName(column).setType(Constants.ADD).setMoney(500.0));
+                    } else if ("基本扣除项".equals(column)) {
+                        List<SalNp> salNpList = salNpService.list(new QueryWrapper<SalNp>().eq("user_name", nameOrNum).eq("year", noFinishSalaryDate.getYear()));
+                        int count = 1;
+                        if (salNpList != null && salNpList.size() > 1) {
+                            count = salNpList.size();
+                        }
+                        jishui_subtract_repeater.add(new SalNpTax().setName("基本扣除项").setType(Constants.SUBTRACT).setMoney(5000.0 * count));
+                    } else {
+                        jishui_subtract_repeater.add(new SalNpTax().setName(column).setType(Constants.SUBTRACT).setMoney(0.0));
+                    }
+                }
+                salPage.setJishui_add_repeater(new Repeater<>(jishui_add_repeater));
+                salPage.setJishui_subtract_repeater(new Repeater<>(jishui_subtract_repeater));
+            }
+            return salPage;
         } else {
             throw new RuntimeException("姓名-输入错误！");
         }

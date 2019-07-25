@@ -56,6 +56,9 @@ public class SalNpServiceImpl extends ServiceImpl<SalNpMapper, SalNp> implements
         //填充用户信息
         fillUserInfo(salNp, salNpPageData.getUserName());
         if (startSalId == null) {
+            //判断该人当月是否已创建了工资信息
+            SalNp tmp = this.getOne(new QueryWrapper<SalNp>().eq("user_name", salNp.getUserName()).eq("year", salNp.getYear()).eq("month", salNp.getMonth()));
+            if (tmp != null) throw new RuntimeException(salNp.getUserName() + "-已存在-" + salNp.getMonth() + "月份-工资信息！");
             //创建按钮-操作
             salFlag = this.save(salNp);
             if (!salFlag) throw new RuntimeException("[工资内聘]保存失败！");
@@ -78,6 +81,7 @@ public class SalNpServiceImpl extends ServiceImpl<SalNpMapper, SalNp> implements
         }
         return salFlag && computeFlag && changeSheetFlag;
     }
+
 
     @Override
     public SalNpPageData editViewComplexData(Long id) {
@@ -307,9 +311,6 @@ public class SalNpServiceImpl extends ServiceImpl<SalNpMapper, SalNp> implements
         List<SalBonus> SalBonusList = (List<SalBonus>) obj1;
         Double otherBonusAllSum = salaryCalculate.otherBonusSum(SalBonusList, Constants.YINGFA_ALL);
         Double currentOtherBonusSum = salaryCalculate.otherBonusSum(SalBonusList, Constants.YINGFA_TAX);
-        if("梁晓菊".equals(salNp.getUserName())){
-            System.out.println("");
-        }
         //应扣合计
         Double yingkouSum = salaryCalculate.yingkou();
         //计税专用项-加项、减项

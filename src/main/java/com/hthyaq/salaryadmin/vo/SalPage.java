@@ -1,6 +1,7 @@
 package com.hthyaq.salaryadmin.vo;
 
 
+import com.hthyaq.salaryadmin.entity.SalNpTax;
 import com.hthyaq.salaryadmin.entity.SysUser;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -15,7 +16,9 @@ public class SalPage {
     private Integer userDeptId;
     private String userDeptName;
     private String yearmonthString;
-
+    //
+    private Repeater<SalNpTax> jishui_add_repeater;
+    private Repeater<SalNpTax> jishui_subtract_repeater;
     public static SalPage converter(SysUser sysUser, String yearmonthString) {
         SalPage salPage = new SalPage();
         salPage.setUserName(sysUser.getName())
