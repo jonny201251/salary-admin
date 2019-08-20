@@ -41,7 +41,7 @@ public class YuanSalaryCalculate extends SalaryCalculate {
     //税款1的应纳税所得额=1月份的应纳税所得额+[2,当月]月的其他薪金（类别=应发计税）-5000*(当月-1)
     private Double shouldTaxSum1(String type, Double currentOtherBonusSum) {
         double shouldTaxSum1 = 0.0;
-        double currentJishuisubtractSum = (salNp.getMonth() - 1) * 5000.0;
+        double currentJishuisubtractSum = (salNp.getRealMonth() - 1) * 5000.0;
         if ("页面".equals(type)) {
             //
         } else if ("应发应扣".equals(type)) {
@@ -79,8 +79,8 @@ public class YuanSalaryCalculate extends SalaryCalculate {
             currentJishuiAddSum = jishuiSum(salNpTaxList, Constants.ADD);
             currentJishuisubtractSum = jishuiSum(salNpTaxList, Constants.SUBTRACT);
         } else if ("月结".equals(type)) {
-            currentJishuiAddSum = 500.0;
-            currentJishuisubtractSum = salNp.getMonth() * 5000.0;
+            currentJishuiAddSum = getEatMoney();
+            currentJishuisubtractSum = salNp.getRealMonth() * 5000.0;
         } else if ("其他薪金".equals(type)) {
             Object obj = salBonusOrSalNpTaxBySalId(SalNpTax.class);
             List<SalNpTax> salNpTaxList = (List<SalNpTax>) obj;

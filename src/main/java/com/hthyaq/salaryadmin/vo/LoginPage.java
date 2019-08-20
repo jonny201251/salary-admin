@@ -9,5 +9,8 @@ import java.util.List;
 public class LoginPage {
     private Integer userId;
     private String userName;
+    private String salNpYearMonth;
+    private String salLtxYearMonth;
+    private String salLxYearMonth;
     HashMap<String, List<String>> buttons=new HashMap<>();
 }

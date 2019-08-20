@@ -60,27 +60,30 @@ public class YingfaYingkouSalNp extends BaseRowModel {
     @ExcelProperty(value = {"单身补"}, index = 16)
     private Double danshengbu;
 
-    @ExcelProperty(value = {"其他"}, index = 17)
+    @ExcelProperty(value = {"物业补贴"}, index = 17)
+    private Double wuye;
+
+    @ExcelProperty(value = {"其他"}, index = 18)
     private Double qita;
 
-    @ExcelProperty(value = {"房租"}, index = 18)
+    @ExcelProperty(value = {"房租"}, index = 19)
     private Double fangzu;
 
-    @ExcelProperty(value = {"养老保险"}, index = 19)
+    @ExcelProperty(value = {"养老保险"}, index = 20)
     private Double yanglao;
 
-    @ExcelProperty(value = {"职业年金"}, index = 20)
+    @ExcelProperty(value = {"职业年金"}, index = 21)
     private Double nianjin;
 
-    @ExcelProperty(value = {"住房"}, index = 21)
+    @ExcelProperty(value = {"住房"}, index = 22)
     private Double zhufang;
 
-    @ExcelProperty(value = {"失业保险"}, index = 22)
+    @ExcelProperty(value = {"失业保险"}, index = 23)
     private Double shiye;
 
-    @ExcelProperty(value = {"扣款"}, index = 23)
+    @ExcelProperty(value = {"扣款"}, index = 24)
     private Double koukuan;
 
-    @ExcelProperty(value = {"医疗保险"}, index = 24)
+    @ExcelProperty(value = {"医疗保险"}, index = 25)
     private Double yiliao;
 }

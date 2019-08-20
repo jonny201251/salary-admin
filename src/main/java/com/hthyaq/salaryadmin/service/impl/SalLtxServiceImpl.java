@@ -196,6 +196,7 @@ public class SalLtxServiceImpl extends ServiceImpl<SalLtxMapper, SalLtx> impleme
                 ofNullable(d.getTiao()).orElse(0.0) +
                 ofNullable(d.getBucha()).orElse(0.0) +
                 ofNullable(d.getZengzi()).orElse(0.0) +
+                ofNullable(d.getWuye()).orElse(0.0) +
                 ofNullable(d.getYingfaqita()).orElse(0.0);
     }
 

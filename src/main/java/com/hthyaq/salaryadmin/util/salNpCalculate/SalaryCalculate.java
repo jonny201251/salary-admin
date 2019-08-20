@@ -27,12 +27,24 @@ public class SalaryCalculate {
     protected SalBonusService salBonusService;
     protected SalNpTaxService salNpTaxService;
     protected SalNp salNp;
+    //食补
+    static Map<Long, Double> eatMap = Maps.newHashMap();
 
     public SalaryCalculate(SalNpService salNpService, SalBonusService salBonusService, SalNpTaxService salNpTaxService, SalNp salNp) {
         this.salNpService = salNpService;
         this.salBonusService = salBonusService;
         this.salNpTaxService = salNpTaxService;
         this.salNp = salNp;
+    }
+
+    //食补
+    public static void setEatMap(Map<Long, Double> tmp) {
+        eatMap = tmp;
+    }
+
+    public Double getEatMoney() {
+        Double money = eatMap.get(salNp.getLastId());
+        return money == null ? 0.0 : money;
     }
 
     //获取一个工资计算的实例
@@ -66,6 +78,7 @@ public class SalaryCalculate {
                 ofNullable(salNp.getXiaoyi()).orElse(0.0) +
                 ofNullable(salNp.getGangjin()).orElse(0.0) +
                 ofNullable(salNp.getDanshengbu()).orElse(0.0) +
+                ofNullable(salNp.getWuye()).orElse(0.0) +
                 ofNullable(salNp.getQita()).orElse(0.0);
     }
 
@@ -87,6 +100,7 @@ public class SalaryCalculate {
                 ofNullable(salNp.getXiaoyi()).orElse(0.0) +
                 ofNullable(salNp.getGangjin()).orElse(0.0) +
                 ofNullable(salNp.getDanshengbu()).orElse(0.0) +
+                ofNullable(salNp.getWuye()).orElse(0.0) +
                 ofNullable(salNp.getQita()).orElse(0.0);
     }
 
@@ -247,7 +261,7 @@ public class SalaryCalculate {
             //计税专用-加项
             beforeJishuiAddSum = beforeJishuiAddSum(beforeSalNpIds);
             //计税专用-减项（除了Contants.TAX_COLUMNS之外的）
-            beforeJishuiSubtractSumExclude=beforeJishuiSubtractSumExclude(beforeSalNpIds);
+            beforeJishuiSubtractSumExclude = beforeJishuiSubtractSumExclude(beforeSalNpIds);
         }
         beforeSumMap.put("beforeShuikuan1Sum", beforeShuikuan1Sum);
         beforeSumMap.put("beforeShuikuan2Sum", beforeShuikuan2Sum);

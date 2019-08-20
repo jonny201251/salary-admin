@@ -44,12 +44,12 @@
             <MaxHistory>1</MaxHistory>
         </rollingPolicy>
     </appender>
-    <root level="ERROR">
+    <root level="INFO">
+        <!--
         <appender-ref ref="consoleApp"/>
-        <!-- <appender-ref ref="fileInfoApp"/>
-          <appender-ref ref="fileErrorApp"/>
-
-          ${catalina.base}/webapps
-          -->
+         <appender-ref ref="fileInfoApp"/>
+         ${catalina.base}/webapps
+        -->
+        <appender-ref ref="fileErrorApp"/>
     </root>
 </configuration>

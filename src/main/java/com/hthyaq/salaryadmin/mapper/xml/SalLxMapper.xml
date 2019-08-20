@@ -18,6 +18,7 @@
         <result column="tiaozi2" property="tiaozi2" />
         <result column="bucha" property="bucha" />
         <result column="zengzi" property="zengzi" />
+        <result column="wuye" property="wuye" />
         <result column="yingfaqita" property="yingfaqita" />
         <result column="fangzu" property="fangzu" />
         <result column="yingkouqita" property="yingkouqita" />
@@ -48,7 +49,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, last_id, jiben, butie1, huli, dianhua, jiaotong, butie2, shubao, butie3, tiaozi1, tiaozi2, bucha, zengzi, yingfaqita, fangzu, yingkouqita, yingfa, yingkou, jiangjin, shifa, user_id, user_name, user_num, user_category, user_bank_account, user_status, user_job, user_give_mode, user_sort, user_dept_id, user_dept_name, user_org, year, month, yearmonth_string, yearmonth_int, finish, create_time, comment
+        id, last_id, jiben, butie1, huli, dianhua, jiaotong, butie2, shubao, butie3, tiaozi1, tiaozi2, bucha, zengzi, yingfaqita, fangzu, wuye,yingkouqita, yingfa, yingkou, jiangjin, shifa, user_id, user_name, user_num, user_category, user_bank_account, user_status, user_job, user_give_mode, user_sort, user_dept_id, user_dept_name, user_org, year, month, yearmonth_string, yearmonth_int, finish, create_time, comment
     </sql>
 
     <update id="updateFinishState">

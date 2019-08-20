@@ -3,6 +3,7 @@ package com.hthyaq.salaryadmin.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.hthyaq.salaryadmin.entity.*;
 import com.hthyaq.salaryadmin.mapper.SalNpMapper;
 import com.hthyaq.salaryadmin.service.*;
@@ -50,6 +51,7 @@ public class SalNpServiceImpl extends ServiceImpl<SalNpMapper, SalNp> implements
         salNpPageData.setYear(yearmonth.get(Constants.YEAR));
         salNpPageData.setMonth(yearmonth.get(Constants.MONTH));
         salNpPageData.setYearmonthInt(yearmonth.get(Constants.YEAR_MONTH_INT));
+        //设置realMonth
         //工资-内聘表
         SalNp salNp = new SalNp();
         BeanUtils.copyProperties(salNpPageData, salNp);
@@ -116,6 +118,16 @@ public class SalNpServiceImpl extends ServiceImpl<SalNpMapper, SalNp> implements
         Integer nextYear = nextYearMonth.get(Constants.NEXT_YEAR);
         Integer nextMonth = nextYearMonth.get(Constants.NEXT_MONTH);
         List<SalNp> newList = Lists.newArrayList();
+        //食补
+        Map<String, Integer> lastYearMonth = YearMonth.getLast(dbYear, dbMonth);
+        Integer lastYear = lastYearMonth.get(Constants.LAST_YEAR);
+        Integer lastMonth = lastYearMonth.get(Constants.LAST_MONTH);
+        List<SalNpTax> salNpTaxList = salNpTaxService.getSalNpTaxByLastDate(lastYear, lastMonth);
+        Map<Long, Double> eatMap = Maps.newHashMap();
+        for (SalNpTax salNpTax : salNpTaxList) {
+            eatMap.put(salNpTax.getSalNpId(), salNpTax.getMoney());
+        }
+        SalaryCalculate.setEatMap(eatMap);
         for (SalNp salNp : list) {
             //清空id,last_id
             salNp.setLastId(salNp.getId());
@@ -126,6 +138,12 @@ public class SalNpServiceImpl extends ServiceImpl<SalNpMapper, SalNp> implements
             salNp.setYearmonthString(nextYear + "年" + nextMonth + "月");
             salNp.setYearmonthInt(YearMonth.getYearMonthInt(nextYear, nextMonth));
             salNp.setCreateTime(LocalDateTime.now());
+            //设置realMonth
+            if (nextMonth == 1) {
+                salNp.setRealMonth(1);
+            } else {
+                salNp.setRealMonth(salNp.getRealMonth() + 1);
+            }
             //重新计算应发合计、应扣合计、税款、实发
             this.onlyComputeNoTransactionForFinish(salNp);
             newList.add(salNp);
@@ -264,24 +282,6 @@ public class SalNpServiceImpl extends ServiceImpl<SalNpMapper, SalNp> implements
         //其他薪金
         Double otherBonusAllSum = salaryCalculate.otherBonusSum(allSalBonus, Constants.YINGFA_ALL);
         Double currentOtherBonusSum = salaryCalculate.otherBonusSum(allSalBonus, Constants.YINGFA_TAX);
-/*        if(Constants.GIVE_MODE_YUAN.equals(salNp.getUserGiveMode())){
-            currentOtherBonusSum=0.0;
-            if(CollectionUtil.isNotNullOrEmpty(allSalBonus)){
-                for(SalBonus ss:allSalBonus){
-                    if(ss!=null){
-                        if(ss.getName()!=null && ss.getMoney()!=null){
-                            if(ss.getName().equals("奖金")){
-                                currentOtherBonusSum=ss.getMoney();
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        if("李哲".equals(salNp.getUserName())){
-            System.out.println();
-        }*/
         //应扣合计
         Double yingkouSum = salaryCalculate.yingkou();
         //计税专用项-加项、减项

@@ -115,6 +115,11 @@ public class SalNp implements Serializable {
     private Double danshengbu;
 
     /**
+     * 物业补贴
+     */
+    private Double wuye;
+
+    /**
      * 其他
      */
     private Double qita;
@@ -255,6 +260,11 @@ public class SalNp implements Serializable {
      * 月份
      */
     private Integer month;
+
+    /**
+     * 本年真正的月份，用于计算计税减项中的基本扣除项
+     */
+    private Integer realMonth;
 
     /**
      * 年月的字符串类型，用于接受前端日期数据

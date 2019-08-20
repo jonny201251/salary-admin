@@ -26,4 +26,10 @@
         )
     </select>
 
+    <select id="getSalNpTaxByLastDate" parameterType="java.util.List" resultMap="BaseResultMap">
+        select * from sal_np_tax
+        where name='食补' and sal_np_id in(
+        select id from sal_np where year=#{lastYear} and month=#{lastMonth})
+    </select>
+
 </mapper>

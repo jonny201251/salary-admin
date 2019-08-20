@@ -94,10 +94,10 @@ public class SysUserController {
                     if ("食补".equals(column)) {
                         jishui_add_repeater.add(new SalNpTax().setName(column).setType(Constants.ADD).setMoney(500.0));
                     } else if ("基本扣除项".equals(column)) {
-                        List<SalNp> salNpList = salNpService.list(new QueryWrapper<SalNp>().eq("user_name", nameOrNum).eq("year", noFinishSalaryDate.getYear()));
+                        SalNp salNp = salNpService.getOne(new QueryWrapper<SalNp>().eq("user_name", nameOrNum).eq("finish", Constants.FINISH_STATUS_NO));
                         int count = 1;
-                        if (salNpList != null && salNpList.size() > 1) {
-                            count = salNpList.size();
+                        if (salNp != null) {
+                            count = salNp.getRealMonth();
                         }
                         jishui_subtract_repeater.add(new SalNpTax().setName("基本扣除项").setType(Constants.SUBTRACT).setMoney(5000.0 * count));
                     } else {
@@ -121,8 +121,13 @@ public class SysUserController {
             throw new RuntimeException(Constants.LOGIN_FAIL_INFO);
         } else {
             LoginPage loginPage = new LoginPage();
+            //用户
             loginPage.setUserId(sysUser.getId());
             loginPage.setUserName(sysUser.getName());
+            //内聘、退休、离休的年月
+            loginPage.setSalNpYearMonth(DateCacheUtil.get(Constants.SAL_NP).getYearmonthString());
+            loginPage.setSalLtxYearMonth(DateCacheUtil.get(Constants.SAL_LTX).getYearmonthString());
+            loginPage.setSalLxYearMonth(DateCacheUtil.get(Constants.SAL_LX).getYearmonthString());
             //查询出权限按钮
             HashMap<String, List<String>> buttons = loginPage.getButtons();
             List<SysPermission> sysPermissionList = sysPermissionService.getButton(sysUser.getId());

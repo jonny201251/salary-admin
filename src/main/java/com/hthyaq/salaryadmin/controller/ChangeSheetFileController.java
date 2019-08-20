@@ -76,7 +76,7 @@ public class ChangeSheetFileController {
         List<OtherBonusModel> salLtxData = getOtherBonusModel(dataList2, headerMap2);
         List<OtherBonusModel> salLxData = getOtherBonusModel(dataList3, headerMap3);
 
-        Map<String, List<? extends BaseRowModel>> dataMap = Maps.newHashMap();
+        Map<String, List<? extends BaseRowModel>> dataMap = Maps.newTreeMap();
         if (CollectionUtil.isNotNullOrEmpty(salNpData)) {
             dataMap.put("内聘", salNpData);
         }

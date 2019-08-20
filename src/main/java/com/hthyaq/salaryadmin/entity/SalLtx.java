@@ -80,6 +80,11 @@ public class SalLtx implements Serializable {
     private Double zengzi;
 
     /**
+     * 物业补贴
+     */
+    private Double wuye;
+
+    /**
      * 应发其他
      */
     private Double yingfaqita;
@@ -88,6 +93,7 @@ public class SalLtx implements Serializable {
      * 房租
      */
     private Double fangzu;
+
 
     /**
      * 应扣其他

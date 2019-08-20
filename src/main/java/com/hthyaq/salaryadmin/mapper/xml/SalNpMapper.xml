@@ -31,6 +31,7 @@
         <result column="shiye" property="shiye"/>
         <result column="koukuan" property="koukuan"/>
         <result column="yiliao" property="yiliao"/>
+        <result column="wuye" property="wuye"/>
         <result column="yingfa" property="yingfa"/>
         <result column="yingkou" property="yingkou"/>
         <result column="jiangjin" property="jiangjin"/>
@@ -48,6 +49,7 @@
         <result column="user_org" property="userOrg"/>
         <result column="year" property="year"/>
         <result column="month" property="month"/>
+        <result column="real_month" property="realMonth"/>
         <result column="yearmonth_string" property="yearmonthString"/>
         <result column="yearmonth_int" property="yearmonthInt"/>
         <result column="finish" property="finish"/>
@@ -57,7 +59,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, last_id, gangwei, xinji, bucha, bunei, fudong, hangling, gongbu, shuxi, caimo, zhibu, baoliu, jidu, shuidian, xiaoyi, gangjin, danshengbu, qita, fangzu, yanglao, nianjin,zhufang, shuikuan1,shuikuan2, shiye, koukuan, yiliao, yingfa, yingkou, jiangjin, shifa, user_id, user_name, user_num, user_category, user_bank_account, user_status,user_job, user_sort, user_dept_id, user_dept_name, user_org, year, month, yearmonth_string, yearmonth_int, finish, create_time, comment
+        id, last_id, gangwei, xinji, bucha, bunei, fudong, hangling, gongbu, shuxi, caimo, zhibu, baoliu, jidu, shuidian, xiaoyi, gangjin, danshengbu,wuye, qita, fangzu, yanglao, nianjin,zhufang, shuikuan1,shuikuan2, shiye, koukuan, yiliao, yingfa, yingkou, jiangjin, shifa, user_id, user_name, user_num, user_category, user_bank_account, user_status,user_job, user_sort, user_dept_id, user_dept_name, user_org, year, month,real_month, yearmonth_string, yearmonth_int, finish, create_time, comment
     </sql>
     
 

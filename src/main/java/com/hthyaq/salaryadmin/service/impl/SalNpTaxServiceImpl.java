@@ -23,4 +23,9 @@ public class SalNpTaxServiceImpl extends ServiceImpl<SalNpTaxMapper, SalNpTax> i
     public List<SalNpTax> getSalNpTaxByUserName(List<String> names) {
         return this.baseMapper.getSalNpTaxByUserName(names);
     }
+
+    @Override
+    public List<SalNpTax> getSalNpTaxByLastDate(Integer lastYear, Integer lastMonth) {
+        return this.baseMapper.getSalNpTaxByLastDate(lastYear, lastMonth);
+    }
 }

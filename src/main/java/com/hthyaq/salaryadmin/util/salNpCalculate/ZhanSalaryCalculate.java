@@ -50,8 +50,8 @@ public class ZhanSalaryCalculate extends SalaryCalculate {
             currentJishuisubtractSum = jishuiSum(salNpTaxList, Constants.SUBTRACT);
         } else if ("月结".equals(type)) {
             currentOtherBonusSum = 0.0;
-            currentJishuiAddSum = 500.0;
-            currentJishuisubtractSum = salNp.getMonth() * 5000.0;
+            currentJishuiAddSum = getEatMoney();
+            currentJishuisubtractSum = salNp.getRealMonth() * 5000.0;
         } else if ("其他薪金".equals(type)) {
             Object obj = salBonusOrSalNpTaxBySalId(SalNpTax.class);
             List<SalNpTax> salNpTaxList = (List<SalNpTax>) obj;

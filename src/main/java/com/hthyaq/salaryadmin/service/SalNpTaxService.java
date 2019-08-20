@@ -15,4 +15,6 @@ import java.util.List;
  */
 public interface SalNpTaxService extends IService<SalNpTax> {
     List<SalNpTax> getSalNpTaxByUserName(List<String> names);
+
+    List<SalNpTax> getSalNpTaxByLastDate(Integer lastYear, Integer lastMonth);
 }

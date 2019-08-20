@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.hthyaq.salaryadmin.entity.SalBonus;
 import com.hthyaq.salaryadmin.entity.SalNp;
 import com.hthyaq.salaryadmin.entity.SalNpTax;
@@ -49,6 +50,7 @@ public class SalNpController {
     SalBonusService salBonusService;
     @Autowired
     SysRoleUserService sysRoleUserService;
+
 
     /***
      * @param loginUserId 当前登录人的id
@@ -103,12 +105,25 @@ public class SalNpController {
             List<SalNp> salNpList = salNpService.list(new QueryWrapper<SalNp>().eq("finish", Constants.FINISH_STATUS_NO));
             List<String> taxColumns = Constants.TAX_COLUMNS;
             List<SalNpTax> taxList = Lists.newArrayList();
+            //获取上月的食补
+            Map<String, Integer> last = YearMonth.getLast(salNpList.get(0).getYear(), salNpList.get(0).getMonth());
+            int lastYear = last.get(Constants.LAST_YEAR);
+            int lastMonth = last.get(Constants.LAST_MONTH);
+            List<SalNpTax> salNpTaxList = salNpTaxService.getSalNpTaxByLastDate(lastYear, lastMonth);
+            Map<Long, Double> eatMap = Maps.newHashMap();
+            for (SalNpTax salNpTax : salNpTaxList) {
+                eatMap.put(salNpTax.getSalNpId(), salNpTax.getMoney());
+            }
             for (SalNp salNp : salNpList) {
                 for (String column : taxColumns) {
                     if ("食补".equals(column)) {
-                        taxList.add(new SalNpTax().setName(column).setType(Constants.ADD).setMoney(500.0).setSalNpId(salNp.getId()));
+                        Double money = eatMap.get(salNp.getLastId());
+                        if (money == null) {
+                            money = 0.0;
+                        }
+                        taxList.add(new SalNpTax().setName(column).setType(Constants.ADD).setMoney(money).setSalNpId(salNp.getId()));
                     } else if ("基本扣除项".equals(column)) {
-                        taxList.add(new SalNpTax().setName("基本扣除项").setType(Constants.SUBTRACT).setMoney(5000.0 * salNpList.get(0).getMonth()).setSalNpId(salNp.getId()));
+                        taxList.add(new SalNpTax().setName("基本扣除项").setType(Constants.SUBTRACT).setMoney(5000.0 * salNp.getRealMonth()).setSalNpId(salNp.getId()));
                     } else {
                         taxList.add(new SalNpTax().setName(column).setType(Constants.SUBTRACT).setMoney(0.0).setSalNpId(salNp.getId()));
                     }

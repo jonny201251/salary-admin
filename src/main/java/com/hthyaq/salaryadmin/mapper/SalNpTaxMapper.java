@@ -2,6 +2,7 @@ package com.hthyaq.salaryadmin.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.hthyaq.salaryadmin.entity.SalNpTax;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -15,4 +16,5 @@ import java.util.List;
  */
 public interface SalNpTaxMapper extends BaseMapper<SalNpTax> {
     List<SalNpTax> getSalNpTaxByUserName(List<String> names);
+    List<SalNpTax> getSalNpTaxByLastDate(@Param("lastYear") Integer lastYear, @Param("lastMonth") Integer lastMonth);
 }
