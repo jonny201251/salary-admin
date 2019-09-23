@@ -86,4 +86,10 @@ public class YingfaYingkouSalNp extends BaseRowModel {
 
     @ExcelProperty(value = {"医疗保险"}, index = 25)
     private Double yiliao;
+
+    @ExcelProperty(value = {"站发税款"}, index = 26)
+    private Double shuikuan1;
+
+    @ExcelProperty(value = {"院发税款"}, index = 27)
+    private Double shuikuan2;
 }

@@ -213,12 +213,14 @@ public class SalNpServiceImpl extends ServiceImpl<SalNpMapper, SalNp> implements
         Double currentOtherBonusSum = salaryCalculate.otherBonusSum(yingfajiangjin_repeater, Constants.YINGFA_TAX);
         Double currentJishuiAddSum = salaryCalculate.jishuiSum(jishui_add_repeater, Constants.ADD);
         Double currentJishuisubtractSum = salaryCalculate.jishuiSum(jishui_subtract_repeater, Constants.SUBTRACT);
-        Double shouldTaxSum1 = salaryCalculate.shouldTaxSum(Constants.SALARY_CALCULATE_TYPE_PAGE, currentOtherBonusSum, currentJishuiAddSum, currentJishuisubtractSum, Constants.SHUIKUAN1);
-        Double shouldTaxSum2 = salaryCalculate.shouldTaxSum(Constants.SALARY_CALCULATE_TYPE_PAGE, currentOtherBonusSum, currentJishuiAddSum, currentJishuisubtractSum, Constants.SHUIKUAN2);
+//        Double shouldTaxSum1 = salaryCalculate.shouldTaxSum(Constants.SALARY_CALCULATE_TYPE_PAGE, currentOtherBonusSum, currentJishuiAddSum, currentJishuisubtractSum, Constants.SHUIKUAN1);
+//        Double shouldTaxSum2 = salaryCalculate.shouldTaxSum(Constants.SALARY_CALCULATE_TYPE_PAGE, currentOtherBonusSum, currentJishuiAddSum, currentJishuisubtractSum, Constants.SHUIKUAN2);
         //税款1
-        Double shuikuan1 = salaryCalculate.shuikuan1(shouldTaxSum1);
+//        Double shuikuan1 = salaryCalculate.shuikuan1(shouldTaxSum1);
+        Double shuikuan1 = ofNullable(d.getShuikuan1()).orElse(0.0);
         //税款2
-        Double shuikuan2 = salaryCalculate.shuikuan2(shouldTaxSum2);
+//        Double shuikuan2 = salaryCalculate.shuikuan2(shouldTaxSum2);
+        Double shuikuan2 = ofNullable(d.getShuikuan2()).orElse(0.0);
 
         shifa(d, yingfaSum, yingkouSum, shuikuan1, shuikuan2, otherBonusAllSum);
         return addFlag && bonusFlag && subtractFlag;
@@ -244,12 +246,14 @@ public class SalNpServiceImpl extends ServiceImpl<SalNpMapper, SalNp> implements
         Double currentJishuiAddSum = salaryCalculate.jishuiSum(salNpTaxList, Constants.ADD);
         Double currentJishuisubtractSum = salaryCalculate.jishuiSum(salNpTaxList, Constants.SUBTRACT);
         //应纳税所得额
-        Double shouldTaxSum1 = salaryCalculate.shouldTaxSum(Constants.SALARY_CALCULATE_TYPE_YINGFAYINGKOU, currentOtherBonusSum, currentJishuiAddSum, currentJishuisubtractSum, Constants.SHUIKUAN1);
-        Double shouldTaxSum2 = salaryCalculate.shouldTaxSum(Constants.SALARY_CALCULATE_TYPE_YINGFAYINGKOU, currentOtherBonusSum, currentJishuiAddSum, currentJishuisubtractSum, Constants.SHUIKUAN2);
+//        Double shouldTaxSum1 = salaryCalculate.shouldTaxSum(Constants.SALARY_CALCULATE_TYPE_YINGFAYINGKOU, currentOtherBonusSum, currentJishuiAddSum, currentJishuisubtractSum, Constants.SHUIKUAN1);
+//        Double shouldTaxSum2 = salaryCalculate.shouldTaxSum(Constants.SALARY_CALCULATE_TYPE_YINGFAYINGKOU, currentOtherBonusSum, currentJishuiAddSum, currentJishuisubtractSum, Constants.SHUIKUAN2);
         //税款1
-        Double shuikuan1 = salaryCalculate.shuikuan1(shouldTaxSum1);
+//        Double shuikuan1 = salaryCalculate.shuikuan1(shouldTaxSum1);
+        Double shuikuan1 = ofNullable(salNp.getShuikuan1()).orElse(0.0);
         //税款2
-        Double shuikuan2 = salaryCalculate.shuikuan2(shouldTaxSum2);
+//        Double shuikuan2 = salaryCalculate.shuikuan2(shouldTaxSum2);
+        Double shuikuan2 = ofNullable(salNp.getShuikuan2()).orElse(0.0);
 
         shifa(salNp, yingfaSum, yingkouSum, shuikuan1, shuikuan2, otherBonusAllSum);
     }
@@ -263,12 +267,14 @@ public class SalNpServiceImpl extends ServiceImpl<SalNpMapper, SalNp> implements
         //应扣合计
         Double yingkouSum = salaryCalculate.yingkou();
         //应纳税所得额
-        Double shouldTaxSum1 = salaryCalculate.shouldTaxSum(Constants.SALARY_CALCULATE_TYPE_YUEJIE, null, null, null, Constants.SHUIKUAN1);
-        Double shouldTaxSum2 = salaryCalculate.shouldTaxSum(Constants.SALARY_CALCULATE_TYPE_YUEJIE, null, null, null, Constants.SHUIKUAN2);
+//        Double shouldTaxSum1 = salaryCalculate.shouldTaxSum(Constants.SALARY_CALCULATE_TYPE_YUEJIE, null, null, null, Constants.SHUIKUAN1);
+//        Double shouldTaxSum2 = salaryCalculate.shouldTaxSum(Constants.SALARY_CALCULATE_TYPE_YUEJIE, null, null, null, Constants.SHUIKUAN2);
         //税款1
-        Double shuikuan1 = salaryCalculate.shuikuan1(shouldTaxSum1);
+//        Double shuikuan1 = salaryCalculate.shuikuan1(shouldTaxSum1);
+        Double shuikuan1 = ofNullable(salNp.getShuikuan1()).orElse(0.0);
         //税款2
-        Double shuikuan2 = salaryCalculate.shuikuan2(shouldTaxSum2);
+//        Double shuikuan2 = salaryCalculate.shuikuan2(shouldTaxSum2);
+        Double shuikuan2 = ofNullable(salNp.getShuikuan2()).orElse(0.0);
 
         shifa(salNp, yingfaSum, yingkouSum, shuikuan1, shuikuan2, 0.0);
     }
@@ -290,12 +296,14 @@ public class SalNpServiceImpl extends ServiceImpl<SalNpMapper, SalNp> implements
         Double currentJishuiAddSum = salaryCalculate.jishuiSum(salNpTaxList, Constants.ADD);
         Double currentJishuisubtractSum = salaryCalculate.jishuiSum(salNpTaxList, Constants.SUBTRACT);
         //应纳税所得额
-        Double shouldTaxSum1 = salaryCalculate.shouldTaxSum(Constants.SALARY_CALCULATE_TYPE_OTHER, currentOtherBonusSum, currentJishuiAddSum, currentJishuisubtractSum, Constants.SHUIKUAN1);
-        Double shouldTaxSum2 = salaryCalculate.shouldTaxSum(Constants.SALARY_CALCULATE_TYPE_OTHER, currentOtherBonusSum, currentJishuiAddSum, currentJishuisubtractSum, Constants.SHUIKUAN2);
+//        Double shouldTaxSum1 = salaryCalculate.shouldTaxSum(Constants.SALARY_CALCULATE_TYPE_OTHER, currentOtherBonusSum, currentJishuiAddSum, currentJishuisubtractSum, Constants.SHUIKUAN1);
+//        Double shouldTaxSum2 = salaryCalculate.shouldTaxSum(Constants.SALARY_CALCULATE_TYPE_OTHER, currentOtherBonusSum, currentJishuiAddSum, currentJishuisubtractSum, Constants.SHUIKUAN2);
         //税款1
-        Double shuikuan1 = salaryCalculate.shuikuan1(shouldTaxSum1);
+//        Double shuikuan1 = salaryCalculate.shuikuan1(shouldTaxSum1);
+        Double shuikuan1 = ofNullable(salNp.getShuikuan1()).orElse(0.0);
         //税款2
-        Double shuikuan2 = salaryCalculate.shuikuan2(shouldTaxSum2);
+//        Double shuikuan2 = salaryCalculate.shuikuan2(shouldTaxSum2);
+        Double shuikuan2 = ofNullable(salNp.getShuikuan2()).orElse(0.0);
 
         shifa(salNp, yingfaSum, yingkouSum, shuikuan1, shuikuan2, otherBonusAllSum);
     }
@@ -317,12 +325,14 @@ public class SalNpServiceImpl extends ServiceImpl<SalNpMapper, SalNp> implements
         Double currentJishuiAddSum = salaryCalculate.jishuiSum(allSalNpTax, Constants.ADD);
         Double currentJishuisubtractSum = salaryCalculate.jishuiSum(allSalNpTax, Constants.SUBTRACT);
         //应纳税所得额
-        Double shouldTaxSum1 = salaryCalculate.shouldTaxSum(Constants.SALARY_CALCULATE_TYPE_TAX, currentOtherBonusSum, currentJishuiAddSum, currentJishuisubtractSum, Constants.SHUIKUAN1);
-        Double shouldTaxSum2 = salaryCalculate.shouldTaxSum(Constants.SALARY_CALCULATE_TYPE_TAX, currentOtherBonusSum, currentJishuiAddSum, currentJishuisubtractSum, Constants.SHUIKUAN2);
+//        Double shouldTaxSum1 = salaryCalculate.shouldTaxSum(Constants.SALARY_CALCULATE_TYPE_TAX, currentOtherBonusSum, currentJishuiAddSum, currentJishuisubtractSum, Constants.SHUIKUAN1);
+//        Double shouldTaxSum2 = salaryCalculate.shouldTaxSum(Constants.SALARY_CALCULATE_TYPE_TAX, currentOtherBonusSum, currentJishuiAddSum, currentJishuisubtractSum, Constants.SHUIKUAN2);
         //税款1
-        Double shuikuan1 = salaryCalculate.shuikuan1(shouldTaxSum1);
+//        Double shuikuan1 = salaryCalculate.shuikuan1(shouldTaxSum1);
+        Double shuikuan1 = ofNullable(salNp.getShuikuan1()).orElse(0.0);
         //税款2
-        Double shuikuan2 = salaryCalculate.shuikuan2(shouldTaxSum2);
+//        Double shuikuan2 = salaryCalculate.shuikuan2(shouldTaxSum2);
+        Double shuikuan2 = ofNullable(salNp.getShuikuan2()).orElse(0.0);
 
         shifa(salNp, yingfaSum, yingkouSum, shuikuan1, shuikuan2, otherBonusAllSum);
     }
