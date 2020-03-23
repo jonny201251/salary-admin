@@ -64,7 +64,7 @@ public class SalNpController {
         if (roleNames.contains("系统管理员") || roleNames.contains("人事专员") || roleNames.contains("人事确认专员") || roleNames.contains("财务专员")) {
             qw.like("user_name", name).orderByDesc("year", "month").orderByAsc("user_sort");
         } else {
-            qw.eq("user_id", loginUserId).orderByDesc("year", "month").orderByAsc("user_sort");
+            qw.eq("user_id", loginUserId).eq("finish", Constants.FINISH_STATUS_YES).orderByDesc("year", "month").orderByAsc("user_sort");
         }
         if (!Strings.isNullOrEmpty(yearmonth)) {
             Map<String, Integer> map = YearMonth.getStartEndYearMonth(yearmonth);

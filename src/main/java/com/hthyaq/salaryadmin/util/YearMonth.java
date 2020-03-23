@@ -35,7 +35,7 @@ public class YearMonth {
         if (currentYearMonthInt >= salYearMonthInt) {
             return true;
         }else{
-            throw new RuntimeException("月结时，出错了！");
+            throw new RuntimeException("月结时，已经超过了3个月，请调整时间！");
         }
     }
 

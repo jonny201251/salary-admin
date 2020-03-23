@@ -566,7 +566,7 @@ public class UploadFileBatchModifyServiceImpl implements UploadFileBatchModifySe
             String comment = null;
             Long sal_id = userNameToSalNpIdHashMap.get(otherBonus.getUserName());
             if (sal_id == null) continue;
-            for (int i = 1; i <= 30; i++) {
+            for (int i = 1; i <= 35; i++) {
                 value = (String) reflectUtil.invokeReturnValue(otherBonus, "getVar" + i);
                 if (!Strings.isNullOrEmpty(value)) {
                     //判断是否是备注
@@ -577,7 +577,7 @@ public class UploadFileBatchModifyServiceImpl implements UploadFileBatchModifySe
                             type = "应发不计税";
                         } else {
                             if (null == type) {
-                                throw new RuntimeException("没有对应的应发计税、应发不计税!");
+                                throw new RuntimeException(moneyName+"-没有对应的应发计税、应发不计税!");
                             }
                         }
                         //构造

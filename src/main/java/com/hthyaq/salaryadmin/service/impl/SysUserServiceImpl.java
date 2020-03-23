@@ -97,7 +97,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      * 在职->退休，在职里删除当月的工资，退休里添加当月的工资（数据为0）
      * 在职 不会转 离休
      *
-     * 退休->死亡，删除当月的工资信息
+     * 内聘人员的部门调动------------------内聘人员的部门更新
+     * 内聘人员的离职时的处理--------------内聘人员删除
+     * 内聘人员的死亡时的处理-------------内聘人员删除
+     * 内聘人员的调出时的处理-------------内聘人员删除
+     * 内聘人员的退休时的处理----------内聘人员删除+退休中添加一条数据
+     * 内聘人员的离休时的处理--------------内聘人员删除+离休中添加一条数据
+     * 退休人员的死亡时的处理-------------退休人员删除
+     * 离休人员的死亡时的处理----------离休人员删除
+     *
+     * 更新-工资的人员信息
      */
     public boolean modifyUserGenerateChangeSheet(SysUser oldSysUser, SysUser newSysUser) {
         //获取工资表中的未月结的年份和月份
@@ -160,6 +169,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             ChangeSheetUser changeSheetUser = constructChangeSheetUser(oldSysUser, newSysUser, year, month, Constants.USER_NOT_JOB_LX, oldDeptName, newDeptName);
             flag1 = changeSheetUserService.save(changeSheetUser);
             flag2 = deleteSalNpUserInfo(oldSysUser);
+            flag2 = flag2 && insertSalLx(oldSysUser);
         } else if (Constants.USER_NOT_JOB_LX.equals(oldJob) && (Constants.USER_LTX_DIE.equals(newJob) || Constants.USER_NOT_JOB_DIE.equals(newJob))) {
             //离休人员的死亡时的处理
             ChangeSheetUser changeSheetUser = constructChangeSheetUser(oldSysUser, newSysUser, year, month, Constants.USER_LTX_DIE, oldDeptName, newDeptName);
@@ -171,7 +181,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 flag2 = updateSalNpUserInfo(oldSysUser, newSysUser);
             } else if (Constants.USER_NOT_JOB_LX.equals(newJob)) {
                 flag2 = updateSalLxUserInfo(oldSysUser, newSysUser);
-            } else {
+            } else if (Constants.USER_NOT_JOB_RETIRE.equals(newJob)) {
                 flag2 = updateSalLtxUserInfo(oldSysUser, newSysUser);
             }
         }
@@ -193,12 +203,35 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         salLtx.setUserDeptName(oldSysUser.getDeptName());
         salLtx.setUserOrg(oldSysUser.getOrg());
         //时间
-        NoFinishSalaryDate noFinishSalaryDate = DateCacheUtil.get(Constants.SAL_LTX);
+        NoFinishSalaryDate noFinishSalaryDate = DateCacheUtil.get(Constants.SAL_NP);
         salLtx.setYearmonthString(noFinishSalaryDate.getYearmonthString());
         salLtx.setYearmonthInt(noFinishSalaryDate.getYearmonthInt());
         salLtx.setYear(noFinishSalaryDate.getYear());
         salLtx.setMonth(noFinishSalaryDate.getMonth());
         return salLtxService.save(salLtx);
+    }
+
+    //往sal_lx(离休表)插入一条数据
+    private boolean insertSalLx(SysUser oldSysUser) {
+        SalLx salLx = new SalLx();
+        salLx.setUserId(oldSysUser.getId());
+        salLx.setUserName(oldSysUser.getName());
+        salLx.setUserCategory(oldSysUser.getCategory());
+        salLx.setUserBankAccount(oldSysUser.getBankAccount());
+        salLx.setUserStatus(oldSysUser.getStatus());
+        salLx.setUserJob(oldSysUser.getJob());
+        salLx.setUserGiveMode(oldSysUser.getGiveMode());
+        salLx.setUserSort(oldSysUser.getSort());
+        salLx.setUserDeptId(oldSysUser.getDeptId());
+        salLx.setUserDeptName(oldSysUser.getDeptName());
+        salLx.setUserOrg(oldSysUser.getOrg());
+        //时间
+        NoFinishSalaryDate noFinishSalaryDate = DateCacheUtil.get(Constants.SAL_NP);
+        salLx.setYearmonthString(noFinishSalaryDate.getYearmonthString());
+        salLx.setYearmonthInt(noFinishSalaryDate.getYearmonthInt());
+        salLx.setYear(noFinishSalaryDate.getYear());
+        salLx.setMonth(noFinishSalaryDate.getMonth());
+        return salLxService.save(salLx);
     }
 
     //当在职人员处于[调出、死亡、离职]状态时，删除-工资的人员信息

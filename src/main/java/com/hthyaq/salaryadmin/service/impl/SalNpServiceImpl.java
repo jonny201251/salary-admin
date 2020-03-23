@@ -271,10 +271,10 @@ public class SalNpServiceImpl extends ServiceImpl<SalNpMapper, SalNp> implements
 //        Double shouldTaxSum2 = salaryCalculate.shouldTaxSum(Constants.SALARY_CALCULATE_TYPE_YUEJIE, null, null, null, Constants.SHUIKUAN2);
         //税款1
 //        Double shuikuan1 = salaryCalculate.shuikuan1(shouldTaxSum1);
-        Double shuikuan1 = ofNullable(salNp.getShuikuan1()).orElse(0.0);
+        Double shuikuan1 = 0.0d;
         //税款2
 //        Double shuikuan2 = salaryCalculate.shuikuan2(shouldTaxSum2);
-        Double shuikuan2 = ofNullable(salNp.getShuikuan2()).orElse(0.0);
+        Double shuikuan2 = 0.0d;
 
         shifa(salNp, yingfaSum, yingkouSum, shuikuan1, shuikuan2, 0.0);
     }

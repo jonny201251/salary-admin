@@ -99,7 +99,22 @@ public class ChildrenTableBatchModify extends BaseRowModel {
     @ExcelProperty(index = 29)
     private String var29;
 
-    @ExcelProperty(index = 20)
+    @ExcelProperty(index = 30)
     private String var30;
+
+    @ExcelProperty(index = 31)
+    private String var31;
+
+    @ExcelProperty(index = 32)
+    private String var32;
+
+    @ExcelProperty(index = 33)
+    private String var33;
+
+    @ExcelProperty(index = 34)
+    private String var34;
+
+    @ExcelProperty(index = 35)
+    private String var35;
 
 }

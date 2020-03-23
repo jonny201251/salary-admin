@@ -108,7 +108,8 @@ public class Constants {
     //计税专用-减项
     public static final String BATCH_MODIFY_TAX_SUBSTRACT = "计税专用-减项";
     //计税专用
-    public static final List<String> TAX_COLUMNS = Lists.newArrayList("食补", "基本扣除项", "累计子女教育支出扣除", "累计赡养老人支出扣除", "累计继续教育支出扣除", "累计住房贷款利息支出扣除", "累计住房租金支出扣除", "商业健康保险");
+//    public static final List<String> TAX_COLUMNS = Lists.newArrayList("食补", "基本扣除项", "累计子女教育支出扣除", "累计赡养老人支出扣除", "累计继续教育支出扣除", "累计住房贷款利息支出扣除", "累计住房租金支出扣除", "商业健康保险");
+    public static final List<String> TAX_COLUMNS = Lists.newArrayList("食补", "基本扣除项");
 
     //月结状态
     public static final String FINISH_STATUS_NO = "未月结";

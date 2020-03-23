@@ -39,11 +39,11 @@ public class YingfaYingkouSalLtx extends BaseRowModel {
     @ExcelProperty(value = {"1617增资"}, index = 9)
     private Double zengzi;
 
-    @ExcelProperty(value = {"应发其他"}, index = 10)
-    private Double yingfaqita;
-
-    @ExcelProperty(value = {"物业补贴"}, index = 11)
+    @ExcelProperty(value = {"物业补贴"}, index = 10)
     private Double wuye;
+
+    @ExcelProperty(value = {"应发其他"}, index = 11)
+    private Double yingfaqita;
 
     @ExcelProperty(value = {"房租"}, index = 12)
     private Double fangzu;
