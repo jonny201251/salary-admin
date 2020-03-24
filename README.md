@@ -25,6 +25,7 @@ ureport访问地址：http://localhost/ureport/designer
   	部门重组
   	
   部署
+    修改yml的数据库
     修改util/Constants中的D盘，还是E盘
     修改logback-spring.xml的配置
     修改ureport.properties中ureport.debug=false
