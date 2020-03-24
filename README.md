@@ -23,7 +23,11 @@ ureport访问地址：http://localhost/ureport/designer
   部门管理
   	部门名称变更
   	部门重组
-  	
+  
+  线上的域名和文件路径：
+      haiyingmall.paas.casicloud.com
+      /usr/local/tomcat/webapps/salaryFile
+      
   部署
     修改yml的数据库
     修改util/Constants中的D盘，还是E盘
