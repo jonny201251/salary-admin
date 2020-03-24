@@ -84,11 +84,11 @@ public class Constants {
     //提交给人事领导
     public static final String COMMIT_TO_HUMAN_LEADER = "提交给人事领导";
     //excel文件的目录
-    public static String EXCEL_PAHT = "d:/salaryFile" + FILE_SEPARATOR + "excel" + FILE_SEPARATOR;
+    public static String EXCEL_PAHT = "d:/salaryFile/excel/";
     //ureport文件的目录
-    public static final String UREPORT_PAHT = "d:/salaryFile" + FILE_SEPARATOR + "ureportfiles";
+    public static final String UREPORT_PAHT = "d:/salaryFile/ureportfiles";
     //临时文件的目录
-    public static final String TMP_PAHT = "d:/salaryFile" + FILE_SEPARATOR + "tmp";
+    public static final String TMP_PAHT = "d:/salaryFile/tmp";
 
     static {
         File UREPORT_PAHT_File = new File(UREPORT_PAHT);
