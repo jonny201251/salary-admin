@@ -5,7 +5,7 @@ swagger访问地址：http://localhost/swagger-ui.html
 ureport访问地址：http://localhost/ureport/designer
 
 管理员：admin/admin
-登录密码：身份证号后6位、123
+登录密码：身份证号后6位 或者  123
 
 1.应发奖金或过节费表，修改为-其他薪金
 2.离退休工资-sal_ltx，仅仅是退休，不包括离休
