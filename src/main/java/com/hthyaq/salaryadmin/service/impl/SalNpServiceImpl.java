@@ -138,6 +138,8 @@ public class SalNpServiceImpl extends ServiceImpl<SalNpMapper, SalNp> implements
             salNp.setYearmonthString(nextYear + "年" + nextMonth + "月");
             salNp.setYearmonthInt(YearMonth.getYearMonthInt(nextYear, nextMonth));
             salNp.setCreateTime(LocalDateTime.now());
+            //清空comment
+            salNp.setComment("");
             //设置realMonth
             if (nextMonth == 1) {
                 salNp.setRealMonth(1);
